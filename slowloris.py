@@ -5,6 +5,7 @@ import random
 import socket
 import sys
 import time
+import socks
 
 parser = argparse.ArgumentParser(
     description="Slowloris, low bandwidth stress test tool for websites"
@@ -80,9 +81,6 @@ if args.useproxy:
     # and monkey patches socket.socket to connect over
     # the proxy by default
     try:
-        logging.debug("Importing SOCKS library...")
-        import socks
-
         logging.debug("Setting up proxy...")
         socks.setdefaultproxy(
             socks.PROXY_TYPE_SOCKS5, args.proxy_host, args.proxy_port
