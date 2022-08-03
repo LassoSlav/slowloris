@@ -5,7 +5,6 @@ import random
 import socket
 import sys
 import time
-import socks
 
 parser = argparse.ArgumentParser(
     description="Slowloris, low bandwidth stress test tool for websites"
@@ -61,6 +60,7 @@ parser.add_argument(
     type=int,
     help="Time to sleep between each header sent.",
 )
+logging.info("setting defaults")
 parser.set_defaults(verbose=False)
 parser.set_defaults(randuseragent=False)
 parser.set_defaults(useproxy=False)
@@ -76,12 +76,14 @@ if not args.host:
     parser.print_help()
     sys.exit(1)
 
+logging.info("Proxy is set to" + args.useproxy)
 if args.useproxy:
     # Tries to import to external "socks" library
     # and monkey patches socket.socket to connect over
     # the proxy by default
     try:
-        logging.debug("Setting up proxy...")
+        logging.info("Setting up proxy...")
+        import socks
         socks.setdefaultproxy(
             socks.PROXY_TYPE_SOCKS5, args.proxy_host, args.proxy_port
         )
